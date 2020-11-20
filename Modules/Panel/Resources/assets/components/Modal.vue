@@ -1,5 +1,6 @@
 <template>
   <div class="modal">
+    <div v-if="failSendingImage" class="error-sending-image">Gagal menambahkan gambar</div>
     <form @submit="formSubmit" enctype="multipart/form-data">
       <!-- <div class="form-group">
         <label for="">Image Name</label>
@@ -10,14 +11,18 @@
         <span>Put your image here</span>
       </div>
       <div class="form-preview">
-        <div v-for="(u, index) in url" :key="`u-${index}`">
-          <img :src="u" style="width: 50px" />
+        <div class="form-preview-body-image">
+          <div class="form-preview-body-image-image" v-for="(u, index) in url" :key="`u-${index}`">
+            <img :src="u" style="height: 50px; padding: 0 25px;" />
+          </div>
         </div>
-        <div v-for="(f, index) in file" :key="`f-${index}`">
-          <p>{{ f.name }}</p>
+        <div class="form-preview-body-name">
+          <div class="form-preview-body-name-name" v-for="(f, index) in file" :key="`f-${index}`">
+            <p>{{ f.name }}</p>
+          </div>
         </div>
       </div>
-      <button>Add</button>
+      <button class="add-button">Add</button>
     </form>
   </div>
 </template>
@@ -33,21 +38,26 @@ export default {
       url: [],
       kotak: [],
       imageName: "",
+      failSendingImage: false,
     };
   },
   methods: {
     onFileChange(e) {
-      console.log(e.target.files[1]);
+      // console.log(e.target.files[1]);
       let i = 0;
       for (i = 0; i < e.target.files.length; i++) {
-        console.log(e.target.files[i]);
+        // console.log(e.target.files[i]);
         this.file.push(e.target.files[i]);
         this.url.push(URL.createObjectURL(e.target.files[i]));
-        console.log(this.file);
-        console.log(this.url);
+        // console.log(this.file);
+        // console.log(this.url);
       }
-      // this.file = e.target.files;
+
       console.log(this.file);
+      console.log(this.url);
+
+      // this.file = e.target.files;
+      // console.log(this.file);
       // console.log(e.target.files[0].name);
       // this.file = e.target.files[0];
       // this.imageName = e.target.files[0].name;
@@ -58,29 +68,40 @@ export default {
     testBind() {
       this.$emit("update");
     },
-    formSubmit(e) {
-      e.preventDefault();
-      let currentObj = this;
-
-      console.log(this.file[0]);
-
-      const config = {
-        headers: { "content-type": "multipart/form-data" },
-      };
-
-      let i = 0;
-      for (i = 0; i < this.file.length; i++) {
+    uploadImages() {
+      const promises = Array.from(this.file).map((f) => {
+        const config = {
+          headers: { "content-type": "multipart/form-data" },
+        };
         let formData = new FormData();
-        formData.append("file", this.file[i]);
-
-        console.log(this.file[i]);
-
-        axios
+        formData.append("file", f);
+        return axios
           .post("http://127.0.0.1:8000/panel/addmedia", formData, config)
           .then(function(response) {
             console.log(response);
-          });
-      }
+          })
+          .catch((err) => (this.failSendingImage = true));
+      });
+      return Promise.all(promises);
+    },
+    async formSubmit(e) {
+      e.preventDefault();
+
+      await this.uploadImages();
+
+      await this.testBind();
+      // console.log(this.file[0]);
+      // const config = {
+      //   headers: { "content-type": "multipart/form-data" },
+      // };
+      // let formData = new FormData();
+      // formData.append("file", this.file[i]);
+      // console.log(this.file[i]);
+      // axios
+      //   .post("http://127.0.0.1:8000/panel/addmedia", formData, config)
+      //   .then(function(response) {
+      //     console.log(response);
+      //   });
 
       // axios
       //   .post("http://127.0.0.1:8000/panel/addmedia", formData, config)
@@ -110,10 +131,24 @@ export default {
   align-items: center;
 }
 
+.error-sending-image {
+  position: absolute;
+  background-color: lawngreen;
+  z-index: 5;
+  opacity: 0.9;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 form {
   width: 100%;
   height: 100%;
-  background-color: pink;
+  background-color: #f5f5f5;
   position: absolute;
   display: flex;
   justify-content: space-around;
@@ -122,15 +157,16 @@ form {
 }
 
 .form-body {
-  height: 30%;
+  height: 20%;
   width: 80%;
-  background-color: powderblue;
+  background-color: white;
   position: relative;
   cursor: pointer;
-  margin-top: 2rem;
+  margin: 3rem auto;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px dotted black;
 }
 
 .form-body:hover {
@@ -138,10 +174,39 @@ form {
 }
 
 .form-preview {
-  height: 30%;
-  width: 80%;
-  background-color: salmon;
+  min-height: 30%;
+  min-width: 80%;
+  background-color: white;
   display: flex;
+  overflow-y: scroll;
+}
+
+.form-preview-body-image {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+}
+
+.form-preview-body-name {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+}
+
+.form-preview-body-image-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2rem 0;
+  height: 50px;
+}
+
+.form-preview-body-name-name {
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2rem 0;
 }
 
 input {
@@ -150,6 +215,9 @@ input {
   position: absolute;
   cursor: pointer;
   opacity: 0;
-  z-index: 3;
+}
+
+.add-button {
+  margin: 2rem auto;
 }
 </style>
