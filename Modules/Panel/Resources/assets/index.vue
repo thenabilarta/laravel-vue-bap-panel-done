@@ -22,7 +22,12 @@
           </tr>
         </thead>
         <tbody>
-          <TableRow v-for="media in medias" v-bind:key="media.id" v-bind:media="media" v-on:update="onDelete"></TableRow>
+          <TableRow
+            v-for="media in medias"
+            v-bind:key="media.id"
+            v-bind:media="media"
+            v-on:update="onDelete"
+          ></TableRow>
         </tbody>
       </table>
     </div>
@@ -43,6 +48,7 @@ export default {
   mounted() {
     axios
       .get("http://127.0.0.1:8000/panel/main")
+      // .then((res) => console.log(res));
       .then((res) => (this.medias = res.data));
   },
   data() {
