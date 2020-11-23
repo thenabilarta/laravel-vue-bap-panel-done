@@ -11,7 +11,7 @@ use GuzzleHttp\Client;
 
 class PanelController extends AppBaseController
 {
-    public $access_token = 'b0uJZSpjtn11l4fXw9iCChHwL1Ai3xB2UkzsgbRb';
+    public $access_token = 'L0L0X5Ci87jYrFSwDiGJMMuQJNutMnzfv8ai6rp5';
 
     public function index()
     {
@@ -20,7 +20,7 @@ class PanelController extends AppBaseController
 
     public function data()
     {
-        $client = new Client(['base_uri' => 'http://192.168.1.8']);
+        $client = new Client(['base_uri' => 'http://192.168.44.127']);
 
         $headers = [
             'Authorization' => 'Bearer ' . $this->access_token,
@@ -55,7 +55,7 @@ class PanelController extends AppBaseController
 
         $imageName = explode("/", $imagePath);
 
-        $client = new Client(['base_uri' => 'http://192.168.1.8']);
+        $client = new Client(['base_uri' => 'http://192.168.44.127']);
 
         $headers = [
             'Authorization' => 'Bearer ' . $this->access_token,
@@ -129,7 +129,7 @@ class PanelController extends AppBaseController
 
         $media_type_real = $media_type[1];
 
-        $client = new Client(['base_uri' => 'http://192.168.1.8']);
+        $client = new Client(['base_uri' => 'http://192.168.44.127']);
 
         $headers = [
             'Authorization' => 'Bearer ' . $this->access_token,
@@ -169,7 +169,7 @@ class PanelController extends AppBaseController
 
         $client = new Client();
 
-        $url = 'http://192.168.1.8/xibo-cms/web/api/library/' . $panel->media_id;
+        $url = 'http://192.168.44.127/xibo-cms/web/api/library/' . $panel->media_id;
 
         $response = $client->delete($url, [
             'headers'  => [

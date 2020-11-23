@@ -4,7 +4,11 @@
     <td>{{ media.image_name }}</td>
     <td>{{ media.type }}</td>
     <td>
-      <img :src="`storage/${media.image_path}`" alt="image" id="image-thumbnail" />
+      <img
+        :src="`storage/${media.image_path}`"
+        alt="image"
+        id="image-thumbnail"
+      />
     </td>
     <td>{{ media.duration }}</td>
     <td>{{ media.size }}</td>
@@ -17,12 +21,17 @@
     <td>
       <button @click="toDelete">Delete</button>
     </td>
-    <ModalEdit v-on:updateEdit="testBind" v-if="editing" v-bind:showdata="showdata"></ModalEdit>
+    <ModalEdit
+      v-on:updateEdit="testBind"
+      v-if="editing"
+      v-bind:showdata="showdata"
+    ></ModalEdit>
   </tr>
 </template>
 
 <script>
 import axios from "axios";
+import swal from "sweetalert";
 
 import ModalEdit from "./ModalEdit";
 
@@ -42,9 +51,36 @@ export default {
   methods: {
     toDelete() {
       console.log(this.mediaProps.media_id);
-      axios
-        .get("http://127.0.0.1:8000/panel/delete/" + this.mediaProps.media_id)
-        .then(() => this.testBind());
+      swal("Do you want to delete this media?", {
+        buttons: {
+          Cancel: true,
+          Delete: {
+            value: "delete",
+          },
+        },
+      }).then((value) => {
+        switch (value) {
+          case "delete":
+            axios
+              .get(
+                "http://127.0.0.1:8000/panel/delete/" + this.mediaProps.media_id
+              )
+              .then(() =>
+                swal({
+                  text: "Media Deleted",
+                  icon: "success",
+                })
+              )
+              .then(() => this.testBind());
+            break;
+
+          default:
+            console.log("Cancelled");
+        }
+      });
+      // axios
+      //   .get("http://127.0.0.1:8000/panel/delete/" + this.mediaProps.media_id)
+      //   .then(() => this.testBind());
     },
     testBind() {
       this.$emit("update");
@@ -77,5 +113,10 @@ th {
   text-overflow: ellipsis;
   overflow: hidden; /* make sure it hides the content that overflows */
   white-space: nowrap;
+  text-align: center;
+}
+
+button.swal-button {
+  background-color: red !important;
 }
 </style>

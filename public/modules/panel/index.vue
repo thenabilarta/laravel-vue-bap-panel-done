@@ -8,12 +8,12 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
+            <th scope="col" @click="orderById">ID</th>
+            <th scope="col" @click="orderByMediasName">Name</th>
             <th scope="col">Type</th>
-            <th scope="col">Thumbnail</th>
+            <th scope="col" @click="orderById">Thumbnail</th>
             <th scope="col">Duration</th>
-            <th scope="col">Size (bytes)</th>
+            <th scope="col" @click="orderBySize">Size (bytes)</th>
             <th scope="col">Owner</th>
             <th scope="col">Permission</th>
             <th scope="col">File Name</th>
@@ -22,7 +22,12 @@
           </tr>
         </thead>
         <tbody>
-          <TableRow v-for="media in medias" v-bind:key="media.id" v-bind:media="media" v-on:update="onDelete"></TableRow>
+          <TableRow
+            v-for="media in medias"
+            v-bind:key="media.id"
+            v-bind:media="media"
+            v-on:update="onDelete"
+          ></TableRow>
         </tbody>
       </table>
     </div>
@@ -31,6 +36,7 @@
 
 <script>
 import axios from "axios";
+import _ from "lodash";
 
 import TableRow from "./components/TableRow";
 import Modal from "./components/Modal";
@@ -43,15 +49,65 @@ export default {
   mounted() {
     axios
       .get("http://127.0.0.1:8000/panel/main")
+      // .then((res) => console.log(res));
       .then((res) => (this.medias = res.data));
   },
   data() {
     return {
       medias: {},
       modal: false,
+      mediaNameASC: true,
+      mediaIdASC: true,
+      mediaSizeASC: true,
     };
   },
+  watch: {
+    medias: function() {
+      console.log(this.medias);
+    },
+  },
   methods: {
+    orderById() {
+      if (this.mediaIdASC) {
+        let sortedMediaByIdASC = _.orderBy(this.medias, ["media_id"], "asc");
+        this.medias = sortedMediaByIdASC;
+        this.mediaIdASC = false;
+      } else {
+        let sortedMediaByIdDESC = _.orderBy(this.medias, ["media_id"], "desc");
+        this.medias = sortedMediaByIdDESC;
+        this.mediaIdASC = true;
+      }
+    },
+    orderBySize() {
+      if (this.mediaSizeASC) {
+        let sortedMediaBySizeASC = _.orderBy(this.medias, "size", "asc");
+        this.medias = sortedMediaBySizeASC;
+        this.mediaSizeASC = false;
+      } else {
+        let sortedMediaBySizeDESC = _.orderBy(this.medias, ["size"], "desc");
+        this.medias = sortedMediaBySizeDESC;
+        this.mediaSizeASC = true;
+      }
+    },
+    orderByMediasName() {
+      if (this.mediaNameASC) {
+        let sortedMediaByNameASC = _.orderBy(
+          this.medias,
+          ["image_name"],
+          "asc"
+        );
+        this.medias = sortedMediaByNameASC;
+        this.mediaNameASC = false;
+      } else {
+        let sortedMediaByNameDESC = _.orderBy(
+          this.medias,
+          ["image_name"],
+          "desc"
+        );
+        this.medias = sortedMediaByNameDESC;
+        this.mediaNameASC = true;
+      }
+    },
     toggleModal() {
       this.modal = !this.modal;
     },
@@ -73,5 +129,9 @@ export default {
 <style scoped>
 .body {
   position: relative;
+}
+
+th {
+  cursor: pointer;
 }
 </style>

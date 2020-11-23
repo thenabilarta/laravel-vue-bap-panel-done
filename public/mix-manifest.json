@@ -1,3 +1,4 @@
 {
-    "/modules/panel/js/panel-vue.js": "/modules/panel/js/panel-vue.js"
+    "/modules/panel/js/panel-vue.js": "/modules/panel/js/panel-vue.js",
+    "/modules/display/js/display-vue.js": "/modules/display/js/display-vue.js"
 }
