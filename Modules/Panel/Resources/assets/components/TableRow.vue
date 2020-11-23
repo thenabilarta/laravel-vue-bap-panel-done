@@ -34,6 +34,7 @@ import axios from "axios";
 import swal from "sweetalert";
 
 import ModalEdit from "./ModalEdit";
+import "./TableRow.css";
 
 export default {
   name: "TableRow",
@@ -69,6 +70,7 @@ export default {
                 swal({
                   text: "Media Deleted",
                   icon: "success",
+                  timer: 2000,
                 })
               )
               .then(() => this.testBind());
@@ -114,9 +116,5 @@ th {
   overflow: hidden; /* make sure it hides the content that overflows */
   white-space: nowrap;
   text-align: center;
-}
-
-button.swal-button {
-  background-color: red !important;
 }
 </style>
