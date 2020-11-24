@@ -1,24 +1,47 @@
 <template>
   <div class="modal">
-    <div v-if="failSendingImage" class="error-sending-image">Gagal menambahkan gambar</div>
+    <div v-if="failSendingImage" class="error-sending-image">
+      Gagal menambahkan gambar
+    </div>
     <form @submit="formSubmit" enctype="multipart/form-data">
       <!-- <div class="form-group">
         <label for="">Image Name</label>
         <input type="text" class="form-control" name="image-name">
       </div> -->
       <div class="form-body">
-        <input type="file" class="input-file" id="image" name="image" v-on:change="onFileChange" ref="file" multiple>
+        <input
+          type="file"
+          class="input-file"
+          id="image"
+          name="image"
+          v-on:change="onFileChange"
+          ref="file"
+          multiple
+        />
         <span>Put your image here</span>
       </div>
       <div class="form-preview">
         <div class="form-preview-body-image">
-          <div class="form-preview-body-image-image" v-for="(u, index) in url" :key="`u-${index}`">
+          <div
+            class="form-preview-body-image-image"
+            v-for="(u, index) in url"
+            :key="`u-${index}`"
+          >
             <img :src="u" style="height: 50px; padding: 0 25px;" />
           </div>
         </div>
         <div class="form-preview-body-name">
-          <div class="form-preview-body-name-name" v-for="(f, index) in file" :key="`f-${index}`">
-            <p>{{ f.name }}</p>
+          <div
+            class="form-preview-body-name-name"
+            v-for="(f, index) in userNamingImage"
+            :key="`f-${index}`"
+          >
+            <input
+              type="text"
+              v-model="form.parent_id[index]"
+              :placeholder="f"
+            />
+            <p>{{ form.parent_id[index] }}</p>
           </div>
         </div>
       </div>
@@ -29,6 +52,7 @@
 
 <script>
 import axios from "axios";
+import _ from "lodash";
 
 export default {
   name: "Modal",
@@ -39,22 +63,45 @@ export default {
       kotak: [],
       imageName: "",
       failSendingImage: false,
+      userNamingImage: [],
+      form: {
+        parent_id: [],
+      },
+      namaSaya: {
+        namaAsli: ["jajang", "Sulaeman"],
+      },
     };
   },
+  watch: {
+    form: function() {
+      console.log(this.form);
+    },
+  },
   methods: {
-    onFileChange(e) {
+    async onFileChange(e) {
       // console.log(e.target.files[1]);
       let i = 0;
       for (i = 0; i < e.target.files.length; i++) {
         // console.log(e.target.files[i]);
         this.file.push(e.target.files[i]);
         this.url.push(URL.createObjectURL(e.target.files[i]));
+        // this.fileImageName.push(e.target.files[i].name);
         // console.log(this.file);
         // console.log(this.url);
       }
 
       console.log(this.file);
       console.log(this.url);
+
+      Array.from(this.file).map((f) => {
+        let imageNameFetched = f.name;
+        let imageNameFetchedOnly = imageNameFetched.substr(
+          0,
+          imageNameFetched.lastIndexOf(".")
+        );
+        this.userNamingImage.push(imageNameFetchedOnly);
+      });
+      // console.log(this.fileImageName);
 
       // this.file = e.target.files;
       // console.log(this.file);
@@ -69,12 +116,20 @@ export default {
       this.$emit("update");
     },
     uploadImages() {
-      const promises = Array.from(this.file).map((f) => {
+      const promises = Array.from(this.file).map((f, index) => {
+        let imageName = f.name;
+        let imageNameOnly = imageName.substr(0, imageName.lastIndexOf("."));
         const config = {
           headers: { "content-type": "multipart/form-data" },
         };
         let formData = new FormData();
         formData.append("file", f);
+        formData.append(
+          "imageName",
+          this.form.parent_id[index]
+            ? this.form.parent_id[index]
+            : imageNameOnly
+        );
         return axios
           .post("http://127.0.0.1:8000/panel/addmedia", formData, config)
           .then(function(response) {
@@ -209,7 +264,7 @@ form {
   padding: 0.2rem 0;
 }
 
-input {
+.input-file {
   width: 100%;
   height: 100%;
   position: absolute;

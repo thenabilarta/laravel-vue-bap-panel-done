@@ -9,12 +9,40 @@ use Illuminate\Routing\Controller;
 use Modules\Platform\Core\Http\Controllers\AppBaseController;
 use GuzzleHttp\Client;
 
+session_start();
+
 class DisplayController extends AppBaseController
 {
-    public $access_token = "L0L0X5Ci87jYrFSwDiGJMMuQJNutMnzfv8ai6rp5";
-
     public function index()
     {
+        // $client = new Client(['base_uri' => 'http://192.168.44.127']);
+
+        // $multipart = [
+        //     [
+        //         'name' => 'client_id',
+        //         'contents' => 'ZLR24lN2Ztf1HfaPQwKmNy4zVMw8J1F7oc8xRyz6'
+        //     ],
+        //     [
+        //         'name' => 'client_secret',
+        //         'contents' => '3opgkjtvFQKaXmDfGbWKC7WWV0778SFgdGf82n6gUbJEdfSbRgyknwF35iDIWDkOgmKNr9y7KrP6UOkoMMGB24zU9MfTTji8ka3dDAorfHYAHfg7eb0mBrbtopcmeK5oRJNjYGKJHbFPw5diPiru8gOFUdkhMjFMbCB6rYBWPIOO41rkvR29uM31i8782O3eVKjQXPfiVA67zEhW7noAvE0KQO3Qr0wwpSg34IHBtlM9FpTZF1C9NQ3phwCz7f'
+        //     ],
+        //     [
+        //         'name' => 'grant_type',
+        //         'contents' => 'client_credentials'
+        //     ],
+        // ];
+
+        // $response = $client->request('POST', '/xibo-cms/web/api/authorize/access_token', [
+        //     'multipart' => $multipart
+        // ]);
+
+        // $contents = $response->getBody();
+        // $content = json_decode($contents, true);
+
+        // $token = $content["access_token"];
+
+        // $_SESSION["token"] = $token;
+
         return view('display::index');
     }
 
