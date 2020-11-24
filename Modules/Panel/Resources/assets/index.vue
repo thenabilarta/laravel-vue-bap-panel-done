@@ -4,7 +4,11 @@
       <button @click="toggleModal">Add Media</button>
     </div>
     <div class="body">
-      <Modal v-if="modal" v-on:update="onUpdate"></Modal>
+      <Modal
+        v-if="modal"
+        v-on:update="onUpdate"
+        v-on:closeModal="onCloseModal"
+      ></Modal>
       <table class="table">
         <thead>
           <tr>
@@ -135,6 +139,9 @@ export default {
     },
     toggleModal() {
       this.modal = !this.modal;
+    },
+    onCloseModal() {
+      this.modal = false;
     },
     onUpdate() {
       this.modal = false;

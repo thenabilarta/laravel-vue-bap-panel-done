@@ -1,25 +1,19 @@
 <template>
-  <div class="modal">
+  <div class="modal" @click.self="closeModal">
     <div v-if="failSendingImage" class="error-sending-image">
       Gagal menambahkan gambar
     </div>
     <form @submit="formSubmit" enctype="multipart/form-data">
-      <!-- <div class="form-group">
-        <label for="">Image Name</label>
-        <input type="text" class="form-control" name="image-name">
-      </div> -->
-      <div class="form-body">
+      <!-- <div class="form-body">
         <input
           type="file"
-          class="input-file"
           id="image"
           name="image"
           v-on:change="onFileChange"
           ref="file"
           multiple
         />
-        <span>Put your image here</span>
-      </div>
+      </div> -->
       <div class="form-preview">
         <div class="form-preview-body-image">
           <div
@@ -41,11 +35,27 @@
               v-model="form.parent_id[index]"
               :placeholder="f"
             />
-            <p>{{ form.parent_id[index] }}</p>
+            <!-- <p>{{ form.parent_id[index] }}</p> -->
+            <p @click="uploadSingle(f)">Upload</p>
+            <p @click="removeSingle(f)">Remove</p>
           </div>
         </div>
       </div>
-      <button class="add-button">Add</button>
+      <div class="navigation">
+        <label class="addimageslabel btn-info btn" for="image"
+          >Add Images</label
+        >
+        <input
+          type="file"
+          id="image"
+          class="input-file"
+          name="image"
+          v-on:change="onFileChange"
+          ref="file"
+          multiple
+        />
+        <button class="add-button btn btn-primary">Upload All</button>
+      </div>
     </form>
   </div>
 </template>
@@ -78,6 +88,24 @@ export default {
     },
   },
   methods: {
+    uploadSingle(f) {
+      console.log("Uploading " + f);
+    },
+    removeSingle(f) {
+      console.log("Removing " + f);
+      for (let i = 0; i < this.file.length; i++) {
+        if (this.file[i].name === f + ".jpg") {
+          // console.log(this.file[i].name);
+          this.file.splice(i, 1);
+        }
+      }
+      console.log(this.file);
+    },
+    closeModal() {
+      this.$emit("closeModal");
+      console.log(this.file);
+      this.file = [];
+    },
     async onFileChange(e) {
       // console.log(e.target.files[1]);
       let i = 0;
@@ -142,6 +170,10 @@ export default {
     async formSubmit(e) {
       e.preventDefault();
 
+      if (this.file.length === 0) {
+        return console.log("Masukkan image");
+      }
+
       await this.uploadImages();
 
       await this.testBind();
@@ -174,12 +206,12 @@ export default {
 
 <style scoped>
 .modal {
-  top: 10%;
-  bottom: 10%;
-  right: 10%;
-  left: 10%;
-  position: absolute;
-  background: #f5f5f5;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
   min-height: 300px;
   display: flex;
   justify-content: center;
@@ -201,8 +233,8 @@ export default {
 }
 
 form {
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 80%;
   background-color: #f5f5f5;
   position: absolute;
   display: flex;
@@ -211,7 +243,7 @@ form {
   flex-direction: column;
 }
 
-.form-body {
+/* .form-body {
   height: 20%;
   width: 80%;
   background-color: white;
@@ -222,15 +254,15 @@ form {
   justify-content: center;
   align-items: center;
   border: 1px dotted black;
-}
+} */
 
-.form-body:hover {
+/* .form-body:hover {
   background-color: #f5f5f5;
-}
+} */
 
 .form-preview {
-  min-height: 30%;
-  min-width: 80%;
+  min-height: 75%;
+  min-width: 90%;
   background-color: white;
   display: flex;
   overflow-y: scroll;
@@ -265,14 +297,31 @@ form {
 }
 
 .input-file {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  cursor: pointer;
   opacity: 0;
+  display: none;
 }
 
-.add-button {
-  margin: 2rem auto;
+/* .button-input {
+  height: 30px;
+  width: 100px;
+  cursor: pointer;
+  position: relative;
+} */
+
+.navigation {
+  display: flex;
+  justify-content: space-around;
+  width: 50%;
+  align-items: center;
 }
+
+.addimageslabel {
+  margin-bottom: 0px !important;
+  font-weight: normal !important;
+  cursor: pointer;
+}
+
+/* .add-button {
+  margin: 2rem auto;
+} */
 </style>
