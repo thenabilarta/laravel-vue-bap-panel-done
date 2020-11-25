@@ -5,7 +5,7 @@
     <td>{{ media.type }}</td>
     <td>
       <img
-        :src="`storage/${media.image_path}`"
+        :src="`storage/uploads/${media.image_name}`"
         alt="image"
         id="image-thumbnail"
       />

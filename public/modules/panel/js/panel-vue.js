@@ -32969,7 +32969,7 @@ var render = function() {
           _c("td", [
             _c("img", {
               attrs: {
-                src: "storage/" + _vm.media.image_path,
+                src: "storage/uploads/" + _vm.media.image_name,
                 alt: "image",
                 id: "image-thumbnail"
               }
@@ -33101,7 +33101,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.modal[data-v-851351f6] {\r\n  top: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n  left: 0;\r\n  position: fixed;\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n  min-height: 300px;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\n}\n.error-sending-image[data-v-851351f6] {\r\n  position: absolute;\r\n  background-color: lawngreen;\r\n  z-index: 5;\r\n  opacity: 0.9;\r\n  top: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n  left: 0;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\n}\nform[data-v-851351f6] {\r\n  width: 80%;\r\n  height: 80%;\r\n  background-color: #f5f5f5;\r\n  position: absolute;\r\n  display: flex;\r\n  justify-content: space-around;\r\n  align-items: center;\r\n  flex-direction: column;\n}\r\n\r\n/* .form-body {\r\n  height: 20%;\r\n  width: 80%;\r\n  background-color: white;\r\n  position: relative;\r\n  cursor: pointer;\r\n  margin: 3rem auto;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  border: 1px dotted black;\r\n} */\r\n\r\n/* .form-body:hover {\r\n  background-color: #f5f5f5;\r\n} */\n.form-preview[data-v-851351f6] {\r\n  min-height: 75%;\r\n  min-width: 90%;\r\n  background-color: white;\r\n  display: flex;\r\n  overflow-y: scroll;\n}\n.form-preview-body-image[data-v-851351f6] {\r\n  display: flex;\r\n  flex: 1 1 0;\r\n  flex-direction: column;\n}\n.form-preview-body-name[data-v-851351f6] {\r\n  display: flex;\r\n  flex: 1 1 0;\r\n  flex-direction: column;\n}\n.form-preview-body-image-image[data-v-851351f6] {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  padding: 0.2rem 0;\r\n  height: 50px;\n}\n.form-preview-body-name-name[data-v-851351f6] {\r\n  min-height: 50px;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  padding: 0.2rem 0;\n}\n.input-file[data-v-851351f6] {\r\n  opacity: 0;\r\n  display: none;\n}\r\n\r\n/* .button-input {\r\n  height: 30px;\r\n  width: 100px;\r\n  cursor: pointer;\r\n  position: relative;\r\n} */\n.navigation[data-v-851351f6] {\r\n  display: flex;\r\n  justify-content: space-around;\r\n  width: 50%;\r\n  align-items: center;\n}\n.addimageslabel[data-v-851351f6] {\r\n  margin-bottom: 0px !important;\r\n  font-weight: normal !important;\r\n  cursor: pointer;\n}\r\n\r\n/* .add-button {\r\n  margin: 2rem auto;\r\n} */\r\n", ""]);
+exports.push([module.i, "\n.modal[data-v-851351f6] {\r\n  top: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n  left: 0;\r\n  position: fixed;\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n  min-height: 300px;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\n}\n.error-sending-image[data-v-851351f6] {\r\n  position: absolute;\r\n  background-color: lawngreen;\r\n  z-index: 5;\r\n  opacity: 0.9;\r\n  top: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n  left: 0;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\n}\nform[data-v-851351f6] {\r\n  width: 80%;\r\n  height: 80%;\r\n  background-color: #f5f5f5;\r\n  position: absolute;\r\n  display: flex;\r\n  justify-content: space-around;\r\n  align-items: center;\r\n  flex-direction: column;\n}\r\n/* .form-body {\r\n  height: 20%;\r\n  width: 80%;\r\n  background-color: white;\r\n  position: relative;\r\n  cursor: pointer;\r\n  margin: 3rem auto;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  border: 1px dotted black;\r\n} */\r\n/* .form-body:hover {\r\n  background-color: #f5f5f5;\r\n} */\n.form-preview[data-v-851351f6] {\r\n  height: 75%;\r\n  min-width: 90%;\r\n  background-color: white;\r\n  display: flex;\r\n  overflow-y: scroll;\n}\n.form-preview-body-image[data-v-851351f6] {\r\n  display: flex;\r\n  flex: 1 1 0;\r\n  flex-direction: column;\n}\n.form-preview-body-name[data-v-851351f6] {\r\n  display: flex;\r\n  flex: 3 1 0;\r\n  flex-direction: column;\n}\n.form-preview-body-image-image[data-v-851351f6] {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  padding: 0.2rem 0;\r\n  height: 100px;\n}\n.form-preview-body-name-name[data-v-851351f6] {\r\n  min-height: 100px;\r\n  padding: 0.2rem 0;\r\n  display: flex;\r\n  width: 100%;\n}\n.form-preview-body-name-name-text[data-v-851351f6] {\r\n  width: 50%;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  flex-direction: column;\n}\n.form-preview-body-name-name-button[data-v-851351f6] {\r\n  width: 50%;\r\n  display: flex;\r\n  justify-content: space-around;\r\n  align-items: center;\n}\n.upload-button[data-v-851351f6] {\r\n  margin: 0 !important;\r\n  cursor: pointer;\n}\n.remove-button[data-v-851351f6] {\r\n  cursor: pointer;\n}\n.input-file[data-v-851351f6] {\r\n  opacity: 0;\r\n  display: none;\n}\r\n/* .button-input {\r\n  height: 30px;\r\n  width: 100px;\r\n  cursor: pointer;\r\n  position: relative;\r\n} */\n.navigation[data-v-851351f6] {\r\n  display: flex;\r\n  justify-content: space-around;\r\n  width: 50%;\r\n  align-items: center;\n}\n.addimageslabel[data-v-851351f6] {\r\n  margin-bottom: 0px !important;\r\n  font-weight: normal !important;\r\n  cursor: pointer;\n}\r\n/* .add-button {\r\n  margin: 2rem auto;\r\n} */\r\n", ""]);
 
 // exports
 
@@ -33184,7 +33184,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-
+//
+//
+//
+//
+//
 
 
 
@@ -33200,9 +33204,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       userNamingImage: [],
       form: {
         parent_id: []
-      },
-      namaSaya: {
-        namaAsli: ["jajang", "Sulaeman"]
       }
     };
   },
@@ -33214,17 +33215,48 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   },
   methods: {
     uploadSingle: function uploadSingle(f) {
+      var _this = this;
+
       console.log("Uploading " + f);
+
+      var _loop = function _loop(i) {
+        if (_this.file[i].name === f + ".jpg") {
+          console.log(_this.file[i].name);
+          var formData = new FormData();
+          formData.append("file", _this.file[i]);
+          formData.append("imageName", _this.form.parent_id[i] ? _this.form.parent_id[i] : "Testing gan");
+          var config = {
+            headers: { "content-type": "multipart/form-data" }
+          };
+          __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("http://127.0.0.1:8000/panel/addmedia", formData, config).then(function (response) {
+            console.log(response);
+          })
+          // .then(() => (this.userNamingImage[i] = "Done"))
+          .then(function () {
+            return Vue.set(_this.userNamingImage, i, "Done");
+          }).then(function () {
+            return _this.testBind();
+          }).catch(function (err) {
+            return _this.failSendingImage = true;
+          });
+        }
+      };
+
+      for (var i = 0; i < this.file.length; i++) {
+        _loop(i);
+      }
     },
     removeSingle: function removeSingle(f) {
       console.log("Removing " + f);
-      for (var i = 0; i < this.file.length; i++) {
-        if (this.file[i].name === f + ".jpg") {
+      for (var i = 0; i < this.userNamingImage.length; i++) {
+        if (this.userNamingImage[i] === f) {
           // console.log(this.file[i].name);
+          this.userNamingImage.splice(i, 1);
+          this.url.splice(i, 1);
           this.file.splice(i, 1);
         }
       }
-      console.log(this.file);
+      console.log(this.userNamingImage);
     },
     closeModal: function closeModal() {
       this.$emit("closeModal");
@@ -33233,7 +33265,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
     onFileChange: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(e) {
-        var _this = this;
+        var _this2 = this;
 
         var i;
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
@@ -33251,17 +33283,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                   // console.log(this.file);
                   // console.log(this.url);
                 }
-
                 console.log(this.file);
                 console.log(this.url);
-
                 Array.from(this.file).map(function (f) {
                   var imageNameFetched = f.name;
                   var imageNameFetchedOnly = imageNameFetched.substr(0, imageNameFetched.lastIndexOf("."));
-                  _this.userNamingImage.push(imageNameFetchedOnly);
+                  _this2.userNamingImage.push(imageNameFetchedOnly);
                 });
                 // console.log(this.fileImageName);
-
                 // this.file = e.target.files;
                 // console.log(this.file);
                 // console.log(e.target.files[0].name);
@@ -33289,7 +33318,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       this.$emit("update");
     },
     uploadImages: function uploadImages() {
-      var _this2 = this;
+      var _this3 = this;
 
       var promises = Array.from(this.file).map(function (f, index) {
         var imageName = f.name;
@@ -33299,11 +33328,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         };
         var formData = new FormData();
         formData.append("file", f);
-        formData.append("imageName", _this2.form.parent_id[index] ? _this2.form.parent_id[index] : imageNameOnly);
+        // formData.append(
+        //   "imageName",
+        //   this.form.parent_id[index]
+        //     ? this.form.parent_id[index]
+        //     : imageNameOnly
+        // );
         return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("http://127.0.0.1:8000/panel/addmedia", formData, config).then(function (response) {
           console.log(response);
         }).catch(function (err) {
-          return _this2.failSendingImage = true;
+          return _this3.failSendingImage = true;
         });
       });
       return Promise.all(promises);
@@ -33315,23 +33349,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             switch (_context2.prev = _context2.next) {
               case 0:
                 e.preventDefault();
-
-                if (!(this.file.length === 0)) {
-                  _context2.next = 3;
-                  break;
-                }
-
-                return _context2.abrupt("return", console.log("Masukkan image"));
+                // if (this.file.length === 0) {
+                //   return console.log("Masukkan image");
+                // }
+                _context2.next = 3;
+                return this.uploadImages();
 
               case 3:
                 _context2.next = 5;
-                return this.uploadImages();
-
-              case 5:
-                _context2.next = 7;
                 return this.testBind();
 
-              case 7:
+              case 5:
               case "end":
                 return _context2.stop();
             }
@@ -34177,7 +34205,7 @@ var render = function() {
                   },
                   [
                     _c("img", {
-                      staticStyle: { height: "50px", padding: "0 25px" },
+                      staticStyle: { height: "100px", padding: "0 25px" },
                       attrs: { src: u }
                     })
                   ]
@@ -34197,53 +34225,71 @@ var render = function() {
                     staticClass: "form-preview-body-name-name"
                   },
                   [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.parent_id[index],
-                          expression: "form.parent_id[index]"
-                        }
-                      ],
-                      attrs: { type: "text", placeholder: f },
-                      domProps: { value: _vm.form.parent_id[index] },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.form.parent_id,
-                            index,
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
                     _c(
-                      "p",
-                      {
-                        on: {
-                          click: function($event) {
-                            return _vm.uploadSingle(f)
-                          }
-                        }
-                      },
-                      [_vm._v("Upload")]
+                      "div",
+                      { staticClass: "form-preview-body-name-name-text" },
+                      [
+                        f !== "Done"
+                          ? _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.parent_id[index],
+                                  expression: "form.parent_id[index]"
+                                }
+                              ],
+                              attrs: { type: "text", placeholder: f },
+                              domProps: { value: _vm.form.parent_id[index] },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form.parent_id,
+                                    index,
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c("p", [_vm._v(_vm._s(f === "Done" ? "Done" : ""))])
+                      ]
                     ),
                     _vm._v(" "),
                     _c(
-                      "p",
-                      {
-                        on: {
-                          click: function($event) {
-                            return _vm.removeSingle(f)
-                          }
-                        }
-                      },
-                      [_vm._v("Remove")]
+                      "div",
+                      { staticClass: "form-preview-body-name-name-button" },
+                      [
+                        _c(
+                          "p",
+                          {
+                            staticClass: "upload-button",
+                            on: {
+                              click: function($event) {
+                                return _vm.uploadSingle(f)
+                              }
+                            }
+                          },
+                          [_vm._v("Upload")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "p",
+                          {
+                            staticClass: "remove-button",
+                            on: {
+                              click: function($event) {
+                                return _vm.removeSingle(f)
+                              }
+                            }
+                          },
+                          [_vm._v("Remove")]
+                        )
+                      ]
                     )
                   ]
                 )

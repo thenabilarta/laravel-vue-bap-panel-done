@@ -81,74 +81,74 @@ class PanelController extends AppBaseController
     public function addmedia(Request $request)
     {
         $file = request('file');
-        $imageName = request('imageName');
+        // $imageNameByUser = request('imageName');
 
         $fileName = $file->getClientOriginalName();
 
-        if (($imageName === 'banana')) {
-            return "Nama sudah ada gan";
-        } else {
-            return $imageName . $fileName ;
-        }
+        // if (($imageName === 'banana')) {
+        //     return "Nama sudah ada gan";
+        // } else {
+        //     return $fileName ;
+        // }
 
         // $fileName = $file->getClientOriginalName();
-        // $imagePath = $file->storeAs('uploads', $fileName);
+        $imagePath = $file->storeAs('public/uploads', $fileName);
 
-        // $imageName = explode("/", $imagePath);
+        $imageName = explode("/", $imagePath);
 
-        // $client = new Client(['base_uri' => 'http://192.168.44.127']);
+        $client = new Client(['base_uri' => 'http://192.168.44.127']);
 
-        // $headers = [
-        //     'Authorization' => 'Bearer ' . $_SESSION["token"],
-        //     'Accept' => 'application/json'
-        // ];
+        $headers = [
+            'Authorization' => 'Bearer ' . $_SESSION["token"],
+            'Accept' => 'application/json'
+        ];
 
-        // $multipart = [
-        //     [
-        //         'name' => 'name',
-        //         'contents' => $fileName
-        //     ],
-        //     [
-        //         'name' => 'files',
-        //         'contents' => fopen('C:/Users/thena/Desktop/laravel_bap_vue/storage/app/public/' . $imagePath, 'r')
-        //     ]
-        // ];
+        $multipart = [
+            [
+                'name' => 'name',
+                'contents' => $fileName
+            ],
+            [
+                'name' => 'files',
+                'contents' => fopen('C:/Users/thena/Desktop/laravel_bap_vue/storage/app/' . $imagePath, 'r')
+            ]
+        ];
 
-        // $response = $client->request('POST', '/xibo-cms/web/api/library', [
-        //     'headers' => $headers,
-        //     'multipart' => $multipart
-        // ]);
+        $response = $client->request('POST', '/xibo-cms/web/api/library', [
+            'headers' => $headers,
+            'multipart' => $multipart
+        ]);
 
-        // $contents = $response->getBody();
-        // $content = json_decode($contents, true);
+        $contents = $response->getBody();
+        $content = json_decode($contents, true);
 
-        // $form_data = array(
-        //     'image_database_name' => $imageName[1],
-        //     'image_name' => $fileName,
-        //     'image_path' => $imagePath,
-        //     'media_id' => '',
-        //     'retired' => '',
-        //     'size' => '',
-        //     'type' => '',
-        //     'duration' => '',
-        // );
+        $form_data = array(
+            'image_database_name' => $imageName[1],
+            'image_name' => $fileName,
+            'image_path' => $imagePath,
+            'media_id' => '',
+            'retired' => '',
+            'size' => '',
+            'type' => '',
+            'duration' => '',
+        );
         
-        // if ( !isset($content["files"][0]["error"])) {
-        //     $panel = Panel::create($form_data);
+        if ( !isset($content["files"][0]["error"])) {
+            $panel = Panel::create($form_data);
 
-        //     $panels = $panel->getAttributes();
+            $panels = $panel->getAttributes();
 
-        //     $panelmediaid = Panel::find($panels["id"]);
+            $panelmediaid = Panel::find($panels["id"]);
 
-        //     if($panelmediaid) {
-        //         $panelmediaid->media_id = $content["files"][0]["mediaId"];
-        //         $panelmediaid->retired = $content["files"][0]["retired"];
-        //         $panelmediaid->size = $content["files"][0]["size"];
-        //         $panelmediaid->type = $content["files"][0]["type"];
-        //         $panelmediaid->duration = $content["files"][0]["duration"];
-        //         $panelmediaid->save();
-        //     }
-        // }
+            if($panelmediaid) {
+                $panelmediaid->media_id = $content["files"][0]["mediaId"];
+                $panelmediaid->retired = $content["files"][0]["retired"];
+                $panelmediaid->size = $content["files"][0]["size"];
+                $panelmediaid->type = $content["files"][0]["type"];
+                $panelmediaid->duration = $content["files"][0]["duration"];
+                $panelmediaid->save();
+            }
+        }
     }
 
     public function edit($id)

@@ -21,7 +21,7 @@
             v-for="(u, index) in url"
             :key="`u-${index}`"
           >
-            <img :src="u" style="height: 50px; padding: 0 25px;" />
+            <img :src="u" style="height: 100px; padding: 0 25px;" />
           </div>
         </div>
         <div class="form-preview-body-name">
@@ -30,14 +30,19 @@
             v-for="(f, index) in userNamingImage"
             :key="`f-${index}`"
           >
-            <input
-              type="text"
-              v-model="form.parent_id[index]"
-              :placeholder="f"
-            />
-            <!-- <p>{{ form.parent_id[index] }}</p> -->
-            <p @click="uploadSingle(f)">Upload</p>
-            <p @click="removeSingle(f)">Remove</p>
+            <div class="form-preview-body-name-name-text">
+              <input
+                type="text"
+                v-model="form.parent_id[index]"
+                :placeholder="f"
+                v-if="f !== 'Done'"
+              />
+              <p>{{ f === "Done" ? "Done" : "" }}</p>
+            </div>
+            <div class="form-preview-body-name-name-button">
+              <p class="upload-button" @click="uploadSingle(f)">Upload</p>
+              <p class="remove-button" @click="removeSingle(f)">Remove</p>
+            </div>
           </div>
         </div>
       </div>
@@ -63,7 +68,6 @@
 <script>
 import axios from "axios";
 import _ from "lodash";
-
 export default {
   name: "Modal",
   data() {
@@ -77,9 +81,6 @@ export default {
       form: {
         parent_id: [],
       },
-      namaSaya: {
-        namaAsli: ["jajang", "Sulaeman"],
-      },
     };
   },
   watch: {
@@ -90,16 +91,41 @@ export default {
   methods: {
     uploadSingle(f) {
       console.log("Uploading " + f);
+      for (let i = 0; i < this.file.length; i++) {
+        if (this.file[i].name === f + ".jpg") {
+          console.log(this.file[i].name);
+          let formData = new FormData();
+          formData.append("file", this.file[i]);
+          formData.append(
+            "imageName",
+            this.form.parent_id[i] ? this.form.parent_id[i] : "Testing gan"
+          );
+          const config = {
+            headers: { "content-type": "multipart/form-data" },
+          };
+          axios
+            .post("http://127.0.0.1:8000/panel/addmedia", formData, config)
+            .then(function(response) {
+              console.log(response);
+            })
+            // .then(() => (this.userNamingImage[i] = "Done"))
+            .then(() => Vue.set(this.userNamingImage, i, "Done"))
+            .then(() => this.testBind())
+            .catch((err) => (this.failSendingImage = true));
+        }
+      }
     },
     removeSingle(f) {
       console.log("Removing " + f);
-      for (let i = 0; i < this.file.length; i++) {
-        if (this.file[i].name === f + ".jpg") {
+      for (let i = 0; i < this.userNamingImage.length; i++) {
+        if (this.userNamingImage[i] === f) {
           // console.log(this.file[i].name);
+          this.userNamingImage.splice(i, 1);
+          this.url.splice(i, 1);
           this.file.splice(i, 1);
         }
       }
-      console.log(this.file);
+      console.log(this.userNamingImage);
     },
     closeModal() {
       this.$emit("closeModal");
@@ -117,10 +143,8 @@ export default {
         // console.log(this.file);
         // console.log(this.url);
       }
-
       console.log(this.file);
       console.log(this.url);
-
       Array.from(this.file).map((f) => {
         let imageNameFetched = f.name;
         let imageNameFetchedOnly = imageNameFetched.substr(
@@ -130,7 +154,6 @@ export default {
         this.userNamingImage.push(imageNameFetchedOnly);
       });
       // console.log(this.fileImageName);
-
       // this.file = e.target.files;
       // console.log(this.file);
       // console.log(e.target.files[0].name);
@@ -152,12 +175,12 @@ export default {
         };
         let formData = new FormData();
         formData.append("file", f);
-        formData.append(
-          "imageName",
-          this.form.parent_id[index]
-            ? this.form.parent_id[index]
-            : imageNameOnly
-        );
+        // formData.append(
+        //   "imageName",
+        //   this.form.parent_id[index]
+        //     ? this.form.parent_id[index]
+        //     : imageNameOnly
+        // );
         return axios
           .post("http://127.0.0.1:8000/panel/addmedia", formData, config)
           .then(function(response) {
@@ -169,13 +192,10 @@ export default {
     },
     async formSubmit(e) {
       e.preventDefault();
-
-      if (this.file.length === 0) {
-        return console.log("Masukkan image");
-      }
-
+      // if (this.file.length === 0) {
+      //   return console.log("Masukkan image");
+      // }
       await this.uploadImages();
-
       await this.testBind();
       // console.log(this.file[0]);
       // const config = {
@@ -189,7 +209,6 @@ export default {
       //   .then(function(response) {
       //     console.log(response);
       //   });
-
       // axios
       //   .post("http://127.0.0.1:8000/panel/addmedia", formData, config)
       //   .then(function(response) {
@@ -217,7 +236,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 .error-sending-image {
   position: absolute;
   background-color: lawngreen;
@@ -231,7 +249,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 form {
   width: 80%;
   height: 80%;
@@ -242,7 +259,6 @@ form {
   align-items: center;
   flex-direction: column;
 }
-
 /* .form-body {
   height: 20%;
   width: 80%;
@@ -255,72 +271,80 @@ form {
   align-items: center;
   border: 1px dotted black;
 } */
-
 /* .form-body:hover {
   background-color: #f5f5f5;
 } */
-
 .form-preview {
-  min-height: 75%;
+  height: 75%;
   min-width: 90%;
   background-color: white;
   display: flex;
   overflow-y: scroll;
 }
-
 .form-preview-body-image {
   display: flex;
   flex: 1 1 0;
   flex-direction: column;
 }
-
 .form-preview-body-name {
   display: flex;
-  flex: 1 1 0;
+  flex: 3 1 0;
   flex-direction: column;
 }
-
 .form-preview-body-image-image {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0.2rem 0;
-  height: 50px;
+  height: 100px;
 }
-
 .form-preview-body-name-name {
-  min-height: 50px;
+  min-height: 100px;
+  padding: 0.2rem 0;
+  display: flex;
+  width: 100%;
+}
+.form-preview-body-name-name-text {
+  width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.2rem 0;
+  flex-direction: column;
 }
-
+.form-preview-body-name-name-button {
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.upload-button {
+  margin: 0 !important;
+  cursor: pointer;
+}
+.remove-button {
+  cursor: pointer;
+}
 .input-file {
   opacity: 0;
   display: none;
 }
-
 /* .button-input {
   height: 30px;
   width: 100px;
   cursor: pointer;
   position: relative;
 } */
-
 .navigation {
   display: flex;
   justify-content: space-around;
   width: 50%;
   align-items: center;
 }
-
 .addimageslabel {
   margin-bottom: 0px !important;
   font-weight: normal !important;
   cursor: pointer;
 }
-
 /* .add-button {
   margin: 2rem auto;
 } */
