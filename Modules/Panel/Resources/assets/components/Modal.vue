@@ -3,7 +3,7 @@
     <div v-if="failSendingImage" class="error-sending-image">
       Gagal menambahkan gambar
     </div>
-    <form @submit="formSubmit" enctype="multipart/form-data">
+    <div class="form">
       <!-- <div class="form-body">
         <input
           type="file"
@@ -59,9 +59,11 @@
           ref="file"
           multiple
         />
-        <button class="add-button btn btn-primary">Upload All</button>
+        <button class="add-button btn btn-primary" @click="formSubmit">
+          Upload All
+        </button>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -98,7 +100,7 @@ export default {
           formData.append("file", this.file[i]);
           formData.append(
             "imageName",
-            this.form.parent_id[i] ? this.form.parent_id[i] : "Testing gan"
+            this.form.parent_id[i] ? this.form.parent_id[i] : f
           );
           const config = {
             headers: { "content-type": "multipart/form-data" },
@@ -106,11 +108,11 @@ export default {
           axios
             .post("http://127.0.0.1:8000/panel/addmedia", formData, config)
             .then(function(response) {
-              console.log(response);
+              console.log(response.data);
             })
             // .then(() => (this.userNamingImage[i] = "Done"))
             .then(() => Vue.set(this.userNamingImage, i, "Done"))
-            .then(() => this.testBind())
+            // .then(() => this.testBind())
             .catch((err) => (this.failSendingImage = true));
         }
       }
@@ -139,20 +141,17 @@ export default {
         // console.log(e.target.files[i]);
         this.file.push(e.target.files[i]);
         this.url.push(URL.createObjectURL(e.target.files[i]));
-        // this.fileImageName.push(e.target.files[i].name);
-        // console.log(this.file);
-        // console.log(this.url);
-      }
-      console.log(this.file);
-      console.log(this.url);
-      Array.from(this.file).map((f) => {
-        let imageNameFetched = f.name;
+        console.log(e.target.files[i].name);
+        let imageNameFetched = e.target.files[i].name;
         let imageNameFetchedOnly = imageNameFetched.substr(
           0,
           imageNameFetched.lastIndexOf(".")
         );
         this.userNamingImage.push(imageNameFetchedOnly);
-      });
+        // this.fileImageName.push(e.target.files[i].name);
+        // console.log(this.file);
+        // console.log(this.url);
+      }
       // console.log(this.fileImageName);
       // this.file = e.target.files;
       // console.log(this.file);
@@ -175,23 +174,26 @@ export default {
         };
         let formData = new FormData();
         formData.append("file", f);
-        // formData.append(
-        //   "imageName",
-        //   this.form.parent_id[index]
-        //     ? this.form.parent_id[index]
-        //     : imageNameOnly
-        // );
+        formData.append(
+          "imageName",
+          this.form.parent_id[index]
+            ? this.form.parent_id[index]
+            : imageNameOnly
+        );
         return axios
           .post("http://127.0.0.1:8000/panel/addmedia", formData, config)
           .then(function(response) {
-            console.log(response);
+            if (response.data.status === failed) {
+              console.log("Fail");
+            } else {
+              console.log(response.data);
+            }
           })
           .catch((err) => (this.failSendingImage = true));
       });
       return Promise.all(promises);
     },
-    async formSubmit(e) {
-      e.preventDefault();
+    async formSubmit() {
       // if (this.file.length === 0) {
       //   return console.log("Masukkan image");
       // }
@@ -231,7 +233,6 @@ export default {
   left: 0;
   position: fixed;
   background-color: rgba(0, 0, 0, 0.5);
-  min-height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -249,7 +250,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
-form {
+.form {
   width: 80%;
   height: 80%;
   background-color: #f5f5f5;

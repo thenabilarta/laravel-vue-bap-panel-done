@@ -5,7 +5,11 @@
     <td>{{ media.type }}</td>
     <td>
       <img
-        :src="`storage/uploads/${media.image_name}`"
+        :src="
+          media.image_database_name
+            ? `storage/uploads/${media.image_database_name}`
+            : ''
+        "
         alt="image"
         id="image-thumbnail"
       />
@@ -25,6 +29,7 @@
       v-on:updateEdit="testBind"
       v-if="editing"
       v-bind:showdata="showdata"
+      v-on:closeModal="onCloseModal"
     ></ModalEdit>
   </tr>
 </template>
@@ -66,13 +71,6 @@ export default {
               .get(
                 "http://127.0.0.1:8000/panel/delete/" + this.mediaProps.media_id
               )
-              .then(() =>
-                swal({
-                  text: "Media Deleted",
-                  icon: "success",
-                  timer: 2000,
-                })
-              )
               .then(() => this.testBind());
             break;
 
@@ -98,6 +96,9 @@ export default {
         .get("http://127.0.0.1:8000/panel/edit/" + this.mediaProps.media_id)
         .then((res) => (this.showdata = res.data))
         .then(() => console.log(this.showdata));
+    },
+    onCloseModal() {
+      this.editing = false;
     },
   },
 };

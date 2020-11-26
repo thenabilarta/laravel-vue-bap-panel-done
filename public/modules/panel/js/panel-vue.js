@@ -32143,6 +32143,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -32180,12 +32185,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         switch (value) {
           case "delete":
             __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get("http://127.0.0.1:8000/panel/delete/" + _this.mediaProps.media_id).then(function () {
-              return __WEBPACK_IMPORTED_MODULE_1_sweetalert___default()({
-                text: "Media Deleted",
-                icon: "success",
-                timer: 2000
-              });
-            }).then(function () {
               return _this.testBind();
             });
             break;
@@ -32215,6 +32214,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }).then(function () {
         return console.log(_this2.showdata);
       });
+    },
+    onCloseModal: function onCloseModal() {
+      this.editing = false;
     }
   }
 });
@@ -32312,7 +32314,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.modal[data-v-663415af] {\r\n  top: 10%;\r\n  bottom: 10%;\r\n  right: 20%;\r\n  opacity: 0.9;\r\n  left: 0;\r\n  position: absolute;\r\n  background: #f5f5f5;\r\n  min-height: 300px;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\n}\n#image-thumbnail[data-v-663415af] {\r\n  max-width: 50px;\n}\r\n", ""]);
+exports.push([module.i, "\n.modal[data-v-663415af] {\r\n  top: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n  left: 0;\r\n  position: fixed;\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\n}\n#image-thumbnail[data-v-663415af] {\r\n  width: 120px;\r\n  padding: 10px;\n}\n.modal-body[data-v-663415af] {\r\n  width: 500px;\r\n  height: 300px;\r\n  background-color: #f5f5f5;\r\n  position: absolute;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\n}\n.modal-body-text[data-v-663415af] {\r\n  height: 100px;\r\n  justify-content: center;\r\n  display: flex;\r\n  align-items: center;\n}\n.modal-body-text input[data-v-663415af] {\r\n  outline: none;\r\n  border: none;\r\n  height: 3rem;\n}\n.modal-body-text button[data-v-663415af] {\r\n  height: 3rem;\n}\r\n", ""]);
 
 // exports
 
@@ -32325,6 +32327,17 @@ exports.push([module.i, "\n.modal[data-v-663415af] {\r\n  top: 10%;\r\n  bottom:
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -32372,16 +32385,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   methods: {
-    formSubmit: function formSubmit(e) {
+    formSubmit: function formSubmit() {
       var _this = this;
 
-      e.preventDefault();
-      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post("http://127.0.0.1:8000/panel/edit/store", this.form).then(function () {
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post("http://127.0.0.1:8000/panel/edit/store", this.form).then(function (res) {
+        return console.log(res);
+      }).then(function () {
         return _this.modalEditBind();
       });
     },
     modalEditBind: function modalEditBind() {
       this.$emit("updateEdit");
+    },
+    closeModal: function closeModal() {
+      this.$emit("closeModal");
     }
   }
 });
@@ -32395,46 +32412,60 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.showdata
-    ? _c("div", { staticClass: "modal" }, [
-        _c("img", {
-          attrs: {
-            src: "storage/" + _vm.showdata.image_path,
-            alt: "image",
-            id: "image-thumbnail"
+    ? _c(
+        "div",
+        {
+          staticClass: "modal",
+          on: {
+            click: function($event) {
+              if ($event.target !== $event.currentTarget) {
+                return null
+              }
+              return _vm.closeModal($event)
+            }
           }
-        }),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(_vm.showdata.image_name))]),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(_vm.showdata.media_id))]),
-        _vm._v(" "),
-        _c("form", { on: { submit: _vm.formSubmit } }, [
-          _vm.imageString
-            ? _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.name,
-                    expression: "form.name"
-                  }
-                ],
-                attrs: { type: "text", placeholder: _vm.imageString },
-                domProps: { value: _vm.form.name },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "name", $event.target.value)
-                  }
+        },
+        [
+          _c("div", { staticClass: "modal-body" }, [
+            _c("div", { staticClass: "modal-body-image" }, [
+              _c("img", {
+                attrs: {
+                  src: "storage/uploads/" + _vm.showdata.image_database_name,
+                  alt: "image",
+                  id: "image-thumbnail"
                 }
               })
-            : _vm._e(),
-          _vm._v(" "),
-          _c("button", [_vm._v("Save")])
-        ])
-      ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body-text" }, [
+              _vm.imageString
+                ? _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.name,
+                        expression: "form.name"
+                      }
+                    ],
+                    attrs: { type: "text", placeholder: _vm.imageString },
+                    domProps: { value: _vm.form.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "name", $event.target.value)
+                      }
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _c("button", { on: { click: _vm.formSubmit } }, [_vm._v("Save")])
+            ])
+          ])
+        ]
+      )
     : _vm._e()
 }
 var staticRenderFns = []
@@ -32969,7 +33000,9 @@ var render = function() {
           _c("td", [
             _c("img", {
               attrs: {
-                src: "storage/uploads/" + _vm.media.image_name,
+                src: _vm.media.image_database_name
+                  ? "storage/uploads/" + _vm.media.image_database_name
+                  : "",
                 alt: "image",
                 id: "image-thumbnail"
               }
@@ -32997,7 +33030,7 @@ var render = function() {
           _vm.editing
             ? _c("ModalEdit", {
                 attrs: { showdata: _vm.showdata },
-                on: { updateEdit: _vm.testBind }
+                on: { updateEdit: _vm.testBind, closeModal: _vm.onCloseModal }
               })
             : _vm._e()
         ],
@@ -33101,7 +33134,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.modal[data-v-851351f6] {\r\n  top: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n  left: 0;\r\n  position: fixed;\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n  min-height: 300px;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\n}\n.error-sending-image[data-v-851351f6] {\r\n  position: absolute;\r\n  background-color: lawngreen;\r\n  z-index: 5;\r\n  opacity: 0.9;\r\n  top: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n  left: 0;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\n}\nform[data-v-851351f6] {\r\n  width: 80%;\r\n  height: 80%;\r\n  background-color: #f5f5f5;\r\n  position: absolute;\r\n  display: flex;\r\n  justify-content: space-around;\r\n  align-items: center;\r\n  flex-direction: column;\n}\r\n/* .form-body {\r\n  height: 20%;\r\n  width: 80%;\r\n  background-color: white;\r\n  position: relative;\r\n  cursor: pointer;\r\n  margin: 3rem auto;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  border: 1px dotted black;\r\n} */\r\n/* .form-body:hover {\r\n  background-color: #f5f5f5;\r\n} */\n.form-preview[data-v-851351f6] {\r\n  height: 75%;\r\n  min-width: 90%;\r\n  background-color: white;\r\n  display: flex;\r\n  overflow-y: scroll;\n}\n.form-preview-body-image[data-v-851351f6] {\r\n  display: flex;\r\n  flex: 1 1 0;\r\n  flex-direction: column;\n}\n.form-preview-body-name[data-v-851351f6] {\r\n  display: flex;\r\n  flex: 3 1 0;\r\n  flex-direction: column;\n}\n.form-preview-body-image-image[data-v-851351f6] {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  padding: 0.2rem 0;\r\n  height: 100px;\n}\n.form-preview-body-name-name[data-v-851351f6] {\r\n  min-height: 100px;\r\n  padding: 0.2rem 0;\r\n  display: flex;\r\n  width: 100%;\n}\n.form-preview-body-name-name-text[data-v-851351f6] {\r\n  width: 50%;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  flex-direction: column;\n}\n.form-preview-body-name-name-button[data-v-851351f6] {\r\n  width: 50%;\r\n  display: flex;\r\n  justify-content: space-around;\r\n  align-items: center;\n}\n.upload-button[data-v-851351f6] {\r\n  margin: 0 !important;\r\n  cursor: pointer;\n}\n.remove-button[data-v-851351f6] {\r\n  cursor: pointer;\n}\n.input-file[data-v-851351f6] {\r\n  opacity: 0;\r\n  display: none;\n}\r\n/* .button-input {\r\n  height: 30px;\r\n  width: 100px;\r\n  cursor: pointer;\r\n  position: relative;\r\n} */\n.navigation[data-v-851351f6] {\r\n  display: flex;\r\n  justify-content: space-around;\r\n  width: 50%;\r\n  align-items: center;\n}\n.addimageslabel[data-v-851351f6] {\r\n  margin-bottom: 0px !important;\r\n  font-weight: normal !important;\r\n  cursor: pointer;\n}\r\n/* .add-button {\r\n  margin: 2rem auto;\r\n} */\r\n", ""]);
+exports.push([module.i, "\n.modal[data-v-851351f6] {\r\n  top: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n  left: 0;\r\n  position: fixed;\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\n}\n.error-sending-image[data-v-851351f6] {\r\n  position: absolute;\r\n  background-color: lawngreen;\r\n  z-index: 5;\r\n  opacity: 0.9;\r\n  top: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n  left: 0;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\n}\n.form[data-v-851351f6] {\r\n  width: 80%;\r\n  height: 80%;\r\n  background-color: #f5f5f5;\r\n  position: absolute;\r\n  display: flex;\r\n  justify-content: space-around;\r\n  align-items: center;\r\n  flex-direction: column;\n}\r\n/* .form-body {\r\n  height: 20%;\r\n  width: 80%;\r\n  background-color: white;\r\n  position: relative;\r\n  cursor: pointer;\r\n  margin: 3rem auto;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  border: 1px dotted black;\r\n} */\r\n/* .form-body:hover {\r\n  background-color: #f5f5f5;\r\n} */\n.form-preview[data-v-851351f6] {\r\n  height: 75%;\r\n  min-width: 90%;\r\n  background-color: white;\r\n  display: flex;\r\n  overflow-y: scroll;\n}\n.form-preview-body-image[data-v-851351f6] {\r\n  display: flex;\r\n  flex: 1 1 0;\r\n  flex-direction: column;\n}\n.form-preview-body-name[data-v-851351f6] {\r\n  display: flex;\r\n  flex: 3 1 0;\r\n  flex-direction: column;\n}\n.form-preview-body-image-image[data-v-851351f6] {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  padding: 0.2rem 0;\r\n  height: 100px;\n}\n.form-preview-body-name-name[data-v-851351f6] {\r\n  min-height: 100px;\r\n  padding: 0.2rem 0;\r\n  display: flex;\r\n  width: 100%;\n}\n.form-preview-body-name-name-text[data-v-851351f6] {\r\n  width: 50%;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  flex-direction: column;\n}\n.form-preview-body-name-name-button[data-v-851351f6] {\r\n  width: 50%;\r\n  display: flex;\r\n  justify-content: space-around;\r\n  align-items: center;\n}\n.upload-button[data-v-851351f6] {\r\n  margin: 0 !important;\r\n  cursor: pointer;\n}\n.remove-button[data-v-851351f6] {\r\n  cursor: pointer;\n}\n.input-file[data-v-851351f6] {\r\n  opacity: 0;\r\n  display: none;\n}\r\n/* .button-input {\r\n  height: 30px;\r\n  width: 100px;\r\n  cursor: pointer;\r\n  position: relative;\r\n} */\n.navigation[data-v-851351f6] {\r\n  display: flex;\r\n  justify-content: space-around;\r\n  width: 50%;\r\n  align-items: center;\n}\n.addimageslabel[data-v-851351f6] {\r\n  margin-bottom: 0px !important;\r\n  font-weight: normal !important;\r\n  cursor: pointer;\n}\r\n/* .add-button {\r\n  margin: 2rem auto;\r\n} */\r\n", ""]);
 
 // exports
 
@@ -33122,6 +33155,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+//
+//
 //
 //
 //
@@ -33224,19 +33259,19 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
           console.log(_this.file[i].name);
           var formData = new FormData();
           formData.append("file", _this.file[i]);
-          formData.append("imageName", _this.form.parent_id[i] ? _this.form.parent_id[i] : "Testing gan");
+          formData.append("imageName", _this.form.parent_id[i] ? _this.form.parent_id[i] : f);
           var config = {
             headers: { "content-type": "multipart/form-data" }
           };
           __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("http://127.0.0.1:8000/panel/addmedia", formData, config).then(function (response) {
-            console.log(response);
+            console.log(response.data);
           })
           // .then(() => (this.userNamingImage[i] = "Done"))
           .then(function () {
             return Vue.set(_this.userNamingImage, i, "Done");
-          }).then(function () {
-            return _this.testBind();
-          }).catch(function (err) {
+          })
+          // .then(() => this.testBind())
+          .catch(function (err) {
             return _this.failSendingImage = true;
           });
         }
@@ -33265,9 +33300,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
     onFileChange: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(e) {
-        var _this2 = this;
-
-        var i;
+        var i, imageNameFetched, imageNameFetchedOnly;
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -33279,17 +33312,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                   // console.log(e.target.files[i]);
                   this.file.push(e.target.files[i]);
                   this.url.push(URL.createObjectURL(e.target.files[i]));
+                  console.log(e.target.files[i].name);
+                  imageNameFetched = e.target.files[i].name;
+                  imageNameFetchedOnly = imageNameFetched.substr(0, imageNameFetched.lastIndexOf("."));
+
+                  this.userNamingImage.push(imageNameFetchedOnly);
                   // this.fileImageName.push(e.target.files[i].name);
                   // console.log(this.file);
                   // console.log(this.url);
                 }
-                console.log(this.file);
-                console.log(this.url);
-                Array.from(this.file).map(function (f) {
-                  var imageNameFetched = f.name;
-                  var imageNameFetchedOnly = imageNameFetched.substr(0, imageNameFetched.lastIndexOf("."));
-                  _this2.userNamingImage.push(imageNameFetchedOnly);
-                });
                 // console.log(this.fileImageName);
                 // this.file = e.target.files;
                 // console.log(this.file);
@@ -33300,7 +33331,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 // console.log(this.kotak);
                 // this.url = URL.createObjectURL(this.file);
 
-              case 5:
+              case 2:
               case "end":
                 return _context.stop();
             }
@@ -33318,7 +33349,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       this.$emit("update");
     },
     uploadImages: function uploadImages() {
-      var _this3 = this;
+      var _this2 = this;
 
       var promises = Array.from(this.file).map(function (f, index) {
         var imageName = f.name;
@@ -33328,38 +33359,33 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         };
         var formData = new FormData();
         formData.append("file", f);
-        // formData.append(
-        //   "imageName",
-        //   this.form.parent_id[index]
-        //     ? this.form.parent_id[index]
-        //     : imageNameOnly
-        // );
+        formData.append("imageName", _this2.form.parent_id[index] ? _this2.form.parent_id[index] : imageNameOnly);
         return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("http://127.0.0.1:8000/panel/addmedia", formData, config).then(function (response) {
-          console.log(response);
+          if (response.data.status === failed) {
+            console.log("Fail");
+          } else {
+            console.log(response.data);
+          }
         }).catch(function (err) {
-          return _this3.failSendingImage = true;
+          return _this2.failSendingImage = true;
         });
       });
       return Promise.all(promises);
     },
     formSubmit: function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(e) {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                e.preventDefault();
-                // if (this.file.length === 0) {
-                //   return console.log("Masukkan image");
-                // }
-                _context2.next = 3;
+                _context2.next = 2;
                 return this.uploadImages();
 
-              case 3:
-                _context2.next = 5;
+              case 2:
+                _context2.next = 4;
                 return this.testBind();
 
-              case 5:
+              case 4:
               case "end":
                 return _context2.stop();
             }
@@ -33367,7 +33393,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         }, _callee2, this);
       }));
 
-      function formSubmit(_x2) {
+      function formSubmit() {
         return _ref2.apply(this, arguments);
       }
 
@@ -34185,142 +34211,140 @@ var render = function() {
           ])
         : _vm._e(),
       _vm._v(" "),
-      _c(
-        "form",
-        {
-          attrs: { enctype: "multipart/form-data" },
-          on: { submit: _vm.formSubmit }
-        },
-        [
-          _c("div", { staticClass: "form-preview" }, [
-            _c(
-              "div",
-              { staticClass: "form-preview-body-image" },
-              _vm._l(_vm.url, function(u, index) {
-                return _c(
-                  "div",
-                  {
-                    key: "u-" + index,
-                    staticClass: "form-preview-body-image-image"
-                  },
-                  [
-                    _c("img", {
-                      staticStyle: { height: "100px", padding: "0 25px" },
-                      attrs: { src: u }
-                    })
-                  ]
-                )
-              }),
-              0
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "form-preview-body-name" },
-              _vm._l(_vm.userNamingImage, function(f, index) {
-                return _c(
-                  "div",
-                  {
-                    key: "f-" + index,
-                    staticClass: "form-preview-body-name-name"
-                  },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "form-preview-body-name-name-text" },
-                      [
-                        f !== "Done"
-                          ? _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.parent_id[index],
-                                  expression: "form.parent_id[index]"
-                                }
-                              ],
-                              attrs: { type: "text", placeholder: f },
-                              domProps: { value: _vm.form.parent_id[index] },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form.parent_id,
-                                    index,
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _c("p", [_vm._v(_vm._s(f === "Done" ? "Done" : ""))])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "form-preview-body-name-name-button" },
-                      [
-                        _c(
-                          "p",
-                          {
-                            staticClass: "upload-button",
-                            on: {
-                              click: function($event) {
-                                return _vm.uploadSingle(f)
-                              }
-                            }
-                          },
-                          [_vm._v("Upload")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "p",
-                          {
-                            staticClass: "remove-button",
-                            on: {
-                              click: function($event) {
-                                return _vm.removeSingle(f)
-                              }
-                            }
-                          },
-                          [_vm._v("Remove")]
-                        )
-                      ]
-                    )
-                  ]
-                )
-              }),
-              0
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "navigation" }, [
-            _c(
-              "label",
-              {
-                staticClass: "addimageslabel btn-info btn",
-                attrs: { for: "image" }
-              },
-              [_vm._v("Add Images")]
-            ),
-            _vm._v(" "),
-            _c("input", {
-              ref: "file",
-              staticClass: "input-file",
-              attrs: { type: "file", id: "image", name: "image", multiple: "" },
-              on: { change: _vm.onFileChange }
+      _c("div", { staticClass: "form" }, [
+        _c("div", { staticClass: "form-preview" }, [
+          _c(
+            "div",
+            { staticClass: "form-preview-body-image" },
+            _vm._l(_vm.url, function(u, index) {
+              return _c(
+                "div",
+                {
+                  key: "u-" + index,
+                  staticClass: "form-preview-body-image-image"
+                },
+                [
+                  _c("img", {
+                    staticStyle: { height: "100px", padding: "0 25px" },
+                    attrs: { src: u }
+                  })
+                ]
+              )
             }),
-            _vm._v(" "),
-            _c("button", { staticClass: "add-button btn btn-primary" }, [
-              _vm._v("Upload All")
-            ])
-          ])
-        ]
-      )
+            0
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "form-preview-body-name" },
+            _vm._l(_vm.userNamingImage, function(f, index) {
+              return _c(
+                "div",
+                {
+                  key: "f-" + index,
+                  staticClass: "form-preview-body-name-name"
+                },
+                [
+                  _c(
+                    "div",
+                    { staticClass: "form-preview-body-name-name-text" },
+                    [
+                      f !== "Done"
+                        ? _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.parent_id[index],
+                                expression: "form.parent_id[index]"
+                              }
+                            ],
+                            attrs: { type: "text", placeholder: f },
+                            domProps: { value: _vm.form.parent_id[index] },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form.parent_id,
+                                  index,
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("p", [_vm._v(_vm._s(f === "Done" ? "Done" : ""))])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-preview-body-name-name-button" },
+                    [
+                      _c(
+                        "p",
+                        {
+                          staticClass: "upload-button",
+                          on: {
+                            click: function($event) {
+                              return _vm.uploadSingle(f)
+                            }
+                          }
+                        },
+                        [_vm._v("Upload")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "p",
+                        {
+                          staticClass: "remove-button",
+                          on: {
+                            click: function($event) {
+                              return _vm.removeSingle(f)
+                            }
+                          }
+                        },
+                        [_vm._v("Remove")]
+                      )
+                    ]
+                  )
+                ]
+              )
+            }),
+            0
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "navigation" }, [
+          _c(
+            "label",
+            {
+              staticClass: "addimageslabel btn-info btn",
+              attrs: { for: "image" }
+            },
+            [_vm._v("Add Images")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            ref: "file",
+            staticClass: "input-file",
+            attrs: { type: "file", id: "image", name: "image", multiple: "" },
+            on: { change: _vm.onFileChange }
+          }),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "add-button btn btn-primary",
+              on: { click: _vm.formSubmit }
+            },
+            [_vm._v("\n        Upload All\n      ")]
+          )
+        ])
+      ])
     ]
   )
 }

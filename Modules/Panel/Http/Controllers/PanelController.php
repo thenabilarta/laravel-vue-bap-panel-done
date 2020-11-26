@@ -81,17 +81,10 @@ class PanelController extends AppBaseController
     public function addmedia(Request $request)
     {
         $file = request('file');
-        // $imageNameByUser = request('imageName');
+        $imageNameByUser = request('imageName');
 
         $fileName = $file->getClientOriginalName();
 
-        // if (($imageName === 'banana')) {
-        //     return "Nama sudah ada gan";
-        // } else {
-        //     return $fileName ;
-        // }
-
-        // $fileName = $file->getClientOriginalName();
         $imagePath = $file->storeAs('public/uploads', $fileName);
 
         $imageName = explode("/", $imagePath);
@@ -106,7 +99,7 @@ class PanelController extends AppBaseController
         $multipart = [
             [
                 'name' => 'name',
-                'contents' => $fileName
+                'contents' => $imageNameByUser
             ],
             [
                 'name' => 'files',
@@ -122,9 +115,17 @@ class PanelController extends AppBaseController
         $contents = $response->getBody();
         $content = json_decode($contents, true);
 
+        if (isset($content["files"][0]["error"])) {
+            return response()->json([
+                "status" => "failed",
+                "messages" => $content["files"][0]["error"]
+            ]);
+            exit();
+        }
+
         $form_data = array(
-            'image_database_name' => $imageName[1],
-            'image_name' => $fileName,
+            'image_database_name' => $imageName[2],
+            'image_name' => $imageNameByUser,
             'image_path' => $imagePath,
             'media_id' => '',
             'retired' => '',
@@ -149,6 +150,8 @@ class PanelController extends AppBaseController
                 $panelmediaid->save();
             }
         }
+
+        return response()->json(["status" => "ok"]);
     }
 
     public function edit($id)
@@ -166,9 +169,9 @@ class PanelController extends AppBaseController
 
         $media_id_real = $request->media_id["media_id"];
 
-        $media_type = explode('.', $media_id);
+        // $media_type = explode('.', $media_id);
 
-        $media_type_real = $media_type[1];
+        // $media_type_real = $media_type[1];
 
         $client = new Client(['base_uri' => 'http://192.168.44.127']);
 
@@ -178,7 +181,7 @@ class PanelController extends AppBaseController
         ];
 
         $formparams = [
-            'name' => $newfilename . '.' . $media_type_real,
+            'name' => $newfilename . '.jpg',
             'duration' => '10',
             'retired' => '0',
             'tags' => '0',
@@ -196,7 +199,7 @@ class PanelController extends AppBaseController
             $panelimagename = Panel::where('media_id', $media_id_real)->firstOrFail();
 
             if($panelimagename) {    
-                $panelimagename->image_name = $newfilename . '.' . $media_type_real;
+                $panelimagename->image_name = $newfilename . '.jpg';
                 $panelimagename->save();
             }
         }
